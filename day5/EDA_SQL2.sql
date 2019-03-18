@@ -68,14 +68,14 @@ select SK_ID_CURR, avg(SK_DPD) as avg_sk_dpd, max(SK_DPD) as max_sk_dpd from pos
 
 -- select * from installments_payments where SK_ID_CURR=100056;
 
-select *, 
+select *,
 case when DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT > 0 then 1 else 0 end as  install_dpd_flag,
 case when AMT_INSTALMENT - AMT_PAYMENT > 0  and AMT_PAYMENT > 0 then 1 else 0 end as install_paid_less,
 case when AMT_INSTALMENT - AMT_PAYMENT > 0  and AMT_PAYMENT = 0 then 1 else 0 end as install_miss_pay
 from installments_payments;
 
 # 32
-select SK_ID_CURR, 
+select SK_ID_CURR,
 avg(case when DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT > 0 then 1 else 0 end) as  avg_install_dpd_flag,
 avg(case when AMT_INSTALMENT - AMT_PAYMENT > 0  and AMT_PAYMENT > 0 then 1 else 0 end) as avg_install_paid_less,
 avg(case when AMT_INSTALMENT - AMT_PAYMENT > 0  and AMT_PAYMENT = 0 then 1 else 0 end) as avg_install_miss_pay
@@ -87,7 +87,7 @@ group by 1;
 # 33
 -- select * from credit_card_balance where SK_ID_CURR = 443277;
 
-select SK_ID_CURR, 
+select SK_ID_CURR,
 sum(case when MONTHS_BALANCE = -1 and NAME_CONTRACT_STATUS = 'Active' then AMT_BALANCE else 0 end) as AMT_BALANCE_1,
 sum(case when MONTHS_BALANCE = -2 and NAME_CONTRACT_STATUS = 'Active' then AMT_BALANCE else 0 end) as AMT_BALANCE_2,
 sum(case when MONTHS_BALANCE = -3 and NAME_CONTRACT_STATUS = 'Active' then AMT_BALANCE else 0 end) as AMT_BALANCE_3,
@@ -157,7 +157,7 @@ base6.AMT_CREDIT_LIMIT_ACTUAL_5,
 base6.AMT_CREDIT_LIMIT_ACTUAL_6,
 base6.AMT_CREDIT_LIMIT_ACTUAL_7
 from
-(select a.*, 
+(select a.*,
 AMT_CREDIT/AMT_ANNUITY as NEW_CREDIT_TO_ANNUITY_RATIO,
 AMT_CREDIT/AMT_GOODS_PRICE as NEW_CREDIT_TO_GOODS_RATIO,
 OWN_CAR_AGE/DAYS_BIRTH as NEW_CAR_TO_BIRTH_RATIO,
@@ -249,7 +249,7 @@ left join
 (select ORGANIZATION_TYPE, avg(AMT_INCOME_TOTAL) as NEW_AVG_INC_BY_ORG
 from application group by 1) as b
 on a.ORGANIZATION_TYPE=b.ORGANIZATION_TYPE
-left join 
+left join
 (
 select SK_ID_CURR,
 max(case when CREDIT_ACTIVE='Closed' then DAYS_CREDIT else null end) as cl_max_DAYS_CREDIT,
@@ -336,7 +336,7 @@ avg(case when CREDIT_ACTIVE='Sold' then AMT_ANNUITY else null end) as sd_avg_AMT
 sum(case when CREDIT_ACTIVE='Sold' then AMT_ANNUITY else null end) as sd_sum_AMT_ANNUITY,
 avg(case when CREDIT_ACTIVE='Bad Debt' then AMT_ANNUITY else null end) as bd_avg_AMT_ANNUITY,
 sum(case when CREDIT_ACTIVE='Bad Debt' then AMT_ANNUITY else null end) as bd_sum_AMT_ANNUITY,
-max(case when  CREDIT_ACTIVE='Bad Debt'  then 1 else 0 end) as bd_flag, 
+max(case when  CREDIT_ACTIVE='Bad Debt'  then 1 else 0 end) as bd_flag,
 sum(case when  CREDIT_ACTIVE='Bad Debt'  then 1 else 0 end) as bd_num
 from bureau
 group by 1) as c
@@ -356,7 +356,7 @@ join bureau as b
 on a.SK_ID_CURR=b.SK_ID_CURR
 join bureau_balance as c
 on b.SK_BUREAU_id=c.sk_id_bureau
-group by 1) as base2 
+group by 1) as base2
 on base.SK_ID_CURR=base2.SK_ID_CURR
 left join
 (select SK_ID_CURR,
@@ -369,7 +369,7 @@ left join
 (select SK_ID_CURR, avg(SK_DPD) as avg_sk_dpd, max(SK_DPD) as max_sk_dpd from pos_cash_balance group  by 1) as base4
 on base.SK_ID_CURR=base4.SK_ID_CURR
 left join
-(select SK_ID_CURR, 
+(select SK_ID_CURR,
 avg(case when DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT > 0 then 1 else 0 end) as  avg_install_dpd_flag,
 avg(case when AMT_INSTALMENT - AMT_PAYMENT > 0  and AMT_PAYMENT > 0 then 1 else 0 end) as avg_install_paid_less,
 avg(case when AMT_INSTALMENT - AMT_PAYMENT > 0  and AMT_PAYMENT = 0 then 1 else 0 end) as avg_install_miss_pay
@@ -377,7 +377,7 @@ from installments_payments
 group by 1) as base5
 on base.SK_ID_CURR=base5.SK_ID_CURR
 left join
-(select SK_ID_CURR, 
+(select SK_ID_CURR,
 sum(case when MONTHS_BALANCE = -1 and NAME_CONTRACT_STATUS = 'Active' then AMT_BALANCE else 0 end) as AMT_BALANCE_1,
 sum(case when MONTHS_BALANCE = -2 and NAME_CONTRACT_STATUS = 'Active' then AMT_BALANCE else 0 end) as AMT_BALANCE_2,
 sum(case when MONTHS_BALANCE = -3 and NAME_CONTRACT_STATUS = 'Active' then AMT_BALANCE else 0 end) as AMT_BALANCE_3,
@@ -405,3 +405,5 @@ from
 credit_card_balance
 group by 1) as base6
 on base.SK_ID_CURR=base6.SK_ID_CURR;
+
+#make a change
